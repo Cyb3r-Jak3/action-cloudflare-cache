@@ -14,7 +14,7 @@ export function create_config(): Config {
     api_method = 'token'
   } else if (core.getInput('global_token') !== '') {
     if (core.getInput('email') === '') {
-      core.setFailed('Need email set when using global token')
+      throw new Error('Need email set when using global token')
     }
     api_method = 'legacy'
   } else {

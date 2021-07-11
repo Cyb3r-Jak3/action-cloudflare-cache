@@ -11,10 +11,10 @@ export async function check_auth(config: Config): Promise<void> {
     if (resp.status === 200) {
       core.info('✔️ Token is good')
     } else {
-      core.setFailed(`Checking token returned: ${resp.status}`)
+      throw new Error(`Checking token returned: ${resp.status}`)
     }
   } catch (error) {
-    core.setFailed(`Error when checking token. ${error.message}`)
+    throw new Error(`Error when checking token. ${error.message}`)
   }
 }
 
@@ -24,7 +24,7 @@ export async function purge_cache(config: Config): Promise<void> {
     config.purge_body
   )
   if (res.status !== 200) {
-    core.error(`Purge cache request did not get 200. ${res.data}`)
+    throw new Error(`Purge cache request did not get 200. ${res.data}`)
   } else {
     core.info('🧹 Cache has been cleared')
   }

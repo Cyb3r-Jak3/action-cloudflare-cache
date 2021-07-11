@@ -9,7 +9,7 @@ test('No API Token', async () => {
 test('No Zone ID', async () => {
   process.env['INPUT_API_TOKEN'] = '2'
   expect(() => config.create_config()).toThrow(
-    'Input required and not supplied: zone_id'
+    'Input required and not supplied: zone'
   )
 })
 
