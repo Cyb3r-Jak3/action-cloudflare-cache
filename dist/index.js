@@ -47,6 +47,7 @@ function check_auth(config) {
             const resp = yield config.instance.get('user/tokens/verify');
             if (resp.status === 200) {
                 core.info('✔️ Token is good');
+                return;
             }
             else {
                 throw new Error(`Checking token returned: ${resp.status}`);
@@ -61,9 +62,15 @@ exports.check_auth = check_auth;
 function purge_cache(config) {
     return __awaiter(this, void 0, void 0, function* () {
         core.debug('Starting purge');
-        core.debug(`Purge Body: ${config.purge_body}`);
-        const res = yield config.instance.post(`zones/${config.zone_id}/purge_cache`, config.purge_body);
-        core.debug(`Purge Body: ${res.request.data}`);
+        core.debug(`Purge Body: ${config.purge_body.toString()}`);
+        let res;
+        try {
+            res = yield config.instance.post(`zones/${config.zone_id}/purge_cache`, config.purge_body);
+        }
+        catch (error) {
+            core.debug(`Purge Body: ${error.request.data}`);
+            return;
+        }
         if (res.status !== 200) {
             throw new Error(`Purge cache request did not get 200. ${res.data}`);
         }
