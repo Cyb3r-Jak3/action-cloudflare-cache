@@ -69,7 +69,7 @@ function purge_cache(config) {
             res = yield config.instance.post(`zones/${config.zone_id}/purge_cache`, config.purge_body);
         }
         catch (error) {
-            core.debug(`Request Body: ${JSON.stringify(error.request)}`);
+            core.debug(`Request Body: ${JSON.stringify(error.request.data)}`);
             throw new Error(`Error making purge request. ${error.message} ${JSON.stringify(error.response.data)}`);
         }
         if (res.status !== 200) {
