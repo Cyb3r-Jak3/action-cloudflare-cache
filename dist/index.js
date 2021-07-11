@@ -199,8 +199,12 @@ function run() {
         try {
             const config = config_1.create_config();
             core.debug('Starting run');
+            core.startGroup('Token Check');
             yield cloudflare.check_auth(config);
+            core.endGroup();
+            core.startGroup('Purging Cache');
             yield cloudflare.purge_cache(config);
+            core.endGroup();
         }
         catch (error) {
             core.setFailed(error.message);
