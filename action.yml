@@ -1,0 +1,25 @@
+name: 'Cloudflare Cache Cleaner'
+description: 'Github action to purge Cloudflare cache'
+author: 'Cyb3r-Jak3'
+branding:
+  icon: 'zap'  
+  color: 'orange'
+inputs:
+  zone:
+    required: true
+    description: "The Zone ID of your domain, which can be found in the right sidebar of your domain's overview page on the Cloudflare dashboard."
+  api_token:
+    required: true
+    description: 'Cloudflare API token to use'
+  URLs:
+    required: false
+    description: "List of URLs to purge. If empty then everything is purged."
+  email:
+    description: "The email address you registered your Cloudflare account with."
+    required: false
+  global_token:
+    description: "Your Global Cloudflare API key. Highly not recommended to use"
+    required: false
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

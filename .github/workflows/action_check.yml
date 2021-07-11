@@ -1,0 +1,30 @@
+name: 'Action Test'
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - '**'
+    tags-ignore:
+      - '**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test URL List
+        uses: ./
+          with:
+            api_token: ${{ secrets.TEST_TOKEN }}
+            zone: ${{ secrets.TEST_ZONE }}
+            URLs: |
+              https://blog.jwhite.network/img/rebuild.webp
+              https://blog.jwhite.network/js/common.js
+
+      - name: Test Everything
+        uses: ./
+          with:
+            api_token: ${{ secrets.TEST_TOKEN }}
+            zone: ${{ secrets.TEST_ZONE }}
+
