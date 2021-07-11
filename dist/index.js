@@ -45,6 +45,7 @@ function check_auth(config) {
         }
         try {
             const resp = yield config.instance.get('user/tokens/verify');
+            core.debug(`${resp.status}`);
             if (resp.status === 200) {
                 core.info('✔️ Token is good');
                 return;
@@ -67,7 +68,7 @@ function purge_cache(config) {
             res = yield config.instance.post(`zones/${config.zone_id}/purge_cache`, config.purge_body);
         }
         catch (error) {
-            return;
+            throw new Error(`Error making purge request. ${error.message}`);
         }
         if (res.status !== 200) {
             throw new Error(`Purge cache request did not get 200. ${res.data}`);
@@ -199,6 +200,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.run = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const config_1 = __nccwpck_require__(88);
 const cloudflare = __importStar(__nccwpck_require__(5588));
@@ -210,15 +212,14 @@ function run() {
             core.startGroup('Token Check');
             yield cloudflare.check_auth(config);
             core.endGroup();
-            core.startGroup('Purging Cache');
             yield cloudflare.purge_cache(config);
-            core.endGroup();
         }
         catch (error) {
             core.setFailed(error.message);
         }
     });
 }
+exports.run = run;
 run();
 
 

@@ -8,6 +8,7 @@ export async function check_auth(config: Config): Promise<void> {
   }
   try {
     const resp = await config.instance.get('user/tokens/verify')
+    core.debug(`${resp.status}`)
     if (resp.status === 200) {
       core.info('✔️ Token is good')
       return
@@ -28,7 +29,7 @@ export async function purge_cache(config: Config): Promise<void> {
       config.purge_body
     )
   } catch (error) {
-    return
+    throw new Error(`Error making purge request. ${error.message}`)
   }
   if (res.status !== 200) {
     throw new Error(`Purge cache request did not get 200. ${res.data}`)
