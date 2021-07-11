@@ -19,6 +19,8 @@ export async function check_auth(config: Config): Promise<void> {
 }
 
 export async function purge_cache(config: Config): Promise<void> {
+  core.debug('Starting purge')
+  core.debug(`Purge Body: ${config.purge_body}`)
   const res = await config.instance.post(
     `zones/${config.zone_id}/purge_cache`,
     config.purge_body

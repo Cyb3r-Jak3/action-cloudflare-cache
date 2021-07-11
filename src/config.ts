@@ -5,7 +5,7 @@ export interface Config {
   token_method: string
   zone_id: string
   instance: AxiosInstance
-  purge_body: {}
+  purge_body: Object
 }
 
 export function create_config(): Config {
