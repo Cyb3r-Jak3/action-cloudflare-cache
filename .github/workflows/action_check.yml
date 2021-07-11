@@ -15,16 +15,16 @@ jobs:
     steps:
       - name: Test URL List
         uses: ./
-          with:
-            api_token: ${{ secrets.TEST_TOKEN }}
-            zone: ${{ secrets.TEST_ZONE }}
-            URLs: |
-              https://blog.jwhite.network/img/rebuild.webp
-              https://blog.jwhite.network/js/common.js
+        with:
+          api_token: ${{ secrets.TEST_TOKEN }}
+          zone: ${{ secrets.TEST_ZONE }}
+          URLs: |
+            https://blog.jwhite.network/img/rebuild.webp
+            https://blog.jwhite.network/js/common.js
 
       - name: Test Everything
         uses: ./
-          with:
-            api_token: ${{ secrets.TEST_TOKEN }}
-            zone: ${{ secrets.TEST_ZONE }}
+        with:
+          api_token: ${{ secrets.TEST_TOKEN }}
+          zone: ${{ secrets.TEST_ZONE }}
 
