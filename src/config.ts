@@ -5,7 +5,7 @@ export interface Config {
   token_method: string
   zone_id: string
   instance: AxiosInstance
-  purge_body: {}
+  purge_body: Object
 }
 
 export function create_config(): Config {
@@ -14,7 +14,7 @@ export function create_config(): Config {
     api_method = 'token'
   } else if (core.getInput('global_token') !== '') {
     if (core.getInput('email') === '') {
-      core.setFailed('Need email set when using global token')
+      throw new Error('Need email set when using global token')
     }
     api_method = 'legacy'
   } else {
@@ -47,7 +47,7 @@ export function create_config(): Config {
     body = {files: urls}
   }
   return {
-    zone_id: core.getInput('zone_id', {required: true}),
+    zone_id: core.getInput('zone', {required: true}),
     token_method: api_method,
     instance: request_instance,
     purge_body: body

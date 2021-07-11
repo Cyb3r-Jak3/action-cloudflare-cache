@@ -8,11 +8,25 @@ on:
       - '**'
     tags-ignore:
       - '**'
+    paths:
+      - "**.ts"
+      - ".github/workflows/action_check.yml"
+      - "action.yml"
+      - "dist/index.js"
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Test Everything
+        uses: ./
+        with:
+          api_token: ${{ secrets.TEST_TOKEN }}
+          zone: ${{ secrets.TEST_ZONE }}
+
       - name: Test URL List
         uses: ./
         with:
@@ -21,10 +35,4 @@ jobs:
           URLs: |
             https://blog.jwhite.network/img/rebuild.webp
             https://blog.jwhite.network/js/common.js
-
-      - name: Test Everything
-        uses: ./
-        with:
-          api_token: ${{ secrets.TEST_TOKEN }}
-          zone: ${{ secrets.TEST_ZONE }}
 

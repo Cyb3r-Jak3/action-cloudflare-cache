@@ -38,38 +38,45 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.purge_cache = exports.check_auth = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 function check_auth(config) {
-    if (config.token_method == "legacy") {
-        core.warning("Unable to check auth as using legacy method");
-        return;
-    }
-    config.instance.get("user/tokens/verify").then(function (response) {
-        if (response.status == 200) {
-            core.info("✔️ Token is good");
+    return __awaiter(this, void 0, void 0, function* () {
+        if (config.token_method === 'legacy') {
+            core.warning('Unable to check auth as using legacy method');
+            return;
         }
-    })
-        .catch(function (error) {
-        core.setFailed(`Error when checking token. ${error.message}`);
+        try {
+            const resp = yield config.instance.get('user/tokens/verify');
+            core.debug(`${resp.status}`);
+            if (resp.status === 200) {
+                core.info('✔️ Token is good');
+                return;
+            }
+            else {
+                throw new Error(`Checking token returned status code: ${resp.status}`);
+            }
+        }
+        catch (error) {
+            throw new Error(`Error when checking token. ${error.message}`);
+        }
     });
 }
 exports.check_auth = check_auth;
 function purge_cache(config) {
     return __awaiter(this, void 0, void 0, function* () {
-        let body;
-        let urls = core.getMultilineInput("URLs");
-        if (urls.length === 0) {
-            core.debug("No URLs given");
-            body = { "purge_everything": true };
+        core.debug('Starting purge');
+        core.debug(`Purge Body: ${JSON.stringify(config.purge_body)}`);
+        let res;
+        try {
+            res = yield config.instance.post(`zones/${config.zone_id}/purge_cache`, config.purge_body);
+        }
+        catch (error) {
+            core.debug(`Request Body: ${JSON.stringify(error.request.data)}`);
+            throw new Error(`Error making purge request. ${error.message} ${JSON.stringify(error.response.data)}`);
+        }
+        if (res.status !== 200) {
+            throw new Error(`Purge cache request did not get 200. ${res.data}`);
         }
         else {
-            core.debug(`URLs: ${urls}`);
-            body = { "files": urls };
-        }
-        const res = yield config.instance.post(`zones/${config.zone_id}/purge_cache`, body);
-        if (res.status != 200) {
-            core.error("Purge cache request did not get 200.");
-        }
-        else {
-            core.info("🧹 Cache has been cleared");
+            core.info('🧹 Cache has been cleared');
         }
     });
 }
@@ -111,35 +118,49 @@ const core = __importStar(__nccwpck_require__(2186));
 const axios_1 = __importDefault(__nccwpck_require__(6545));
 function create_config() {
     let api_method;
-    if (core.getInput("api_token") != "") {
-        api_method = "token";
+    if (core.getInput('api_token') !== '') {
+        api_method = 'token';
     }
-    else if (core.getInput("global_token") != "") {
-        if (core.getInput("email") == "") {
-            core.setFailed("Need email set when using global token");
+    else if (core.getInput('global_token') !== '') {
+        if (core.getInput('email') === '') {
+            throw new Error('Need email set when using global token');
         }
-        api_method = "legacy";
+        api_method = 'legacy';
     }
     else {
-        core.setFailed("Need to have either an api_token or global_token with email set");
+        throw new Error('Need to have either an api_token or global_token with email set');
     }
     let request_instance;
-    if (api_method = "token") {
+    if (api_method === 'token') {
         request_instance = axios_1.default.create({
-            baseURL: "https://api.cloudflare.com/client/v4/",
-            headers: { "Authorization": `Bearer ${core.getInput("api_token")}` }
+            baseURL: 'https://api.cloudflare.com/client/v4/',
+            headers: { Authorization: `Bearer ${core.getInput('api_token')}` }
         });
     }
     else {
         request_instance = axios_1.default.create({
-            baseURL: "https://api.cloudflare.com/client/v4/",
-            headers: { "X-Auth-Key": core.getInput("global_token"), "X-Auth-Email": core.getInput("email") }
+            baseURL: 'https://api.cloudflare.com/client/v4/',
+            headers: {
+                'X-Auth-Key': core.getInput('global_token'),
+                'X-Auth-Email': core.getInput('email')
+            }
         });
     }
+    let body;
+    const urls = core.getMultilineInput('URLs');
+    if (urls.length === 0) {
+        core.debug('No URLs given');
+        body = { purge_everything: true };
+    }
+    else {
+        core.debug(`URLs: ${urls}`);
+        body = { files: urls };
+    }
     return {
-        zone_id: core.getInput("zone_id", { required: true }),
+        zone_id: core.getInput('zone', { required: true }),
         token_method: api_method,
-        instance: request_instance
+        instance: request_instance,
+        purge_body: body
     };
 }
 exports.create_config = create_config;
@@ -181,21 +202,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.run = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const config_1 = __nccwpck_require__(88);
 const cloudflare = __importStar(__nccwpck_require__(5588));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            let config = config_1.create_config();
-            core.debug("Starting run");
-            cloudflare.check_auth(config);
+            const config = config_1.create_config();
+            core.debug('Starting run');
+            core.startGroup('Token Check');
+            yield cloudflare.check_auth(config);
+            core.endGroup();
+            yield cloudflare.purge_cache(config);
         }
         catch (error) {
             core.setFailed(error.message);
         }
     });
 }
+exports.run = run;
 run();
 
 
