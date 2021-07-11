@@ -49,11 +49,11 @@ function check_auth(config) {
                 core.info('✔️ Token is good');
             }
             else {
-                core.setFailed(`Checking token returned: ${resp.status}`);
+                throw new Error(`Checking token returned: ${resp.status}`);
             }
         }
         catch (error) {
-            core.setFailed(`Error when checking token. ${error.message}`);
+            throw new Error(`Error when checking token. ${error.message}`);
         }
     });
 }
@@ -62,7 +62,7 @@ function purge_cache(config) {
     return __awaiter(this, void 0, void 0, function* () {
         const res = yield config.instance.post(`zones/${config.zone_id}/purge_cache`, config.purge_body);
         if (res.status !== 200) {
-            core.error('Purge cache request did not get 200.');
+            throw new Error(`Purge cache request did not get 200. ${res.data}`);
         }
         else {
             core.info('🧹 Cache has been cleared');
@@ -112,7 +112,7 @@ function create_config() {
     }
     else if (core.getInput('global_token') !== '') {
         if (core.getInput('email') === '') {
-            core.setFailed('Need email set when using global token');
+            throw new Error('Need email set when using global token');
         }
         api_method = 'legacy';
     }
@@ -199,8 +199,8 @@ function run() {
         try {
             const config = config_1.create_config();
             core.debug('Starting run');
-            cloudflare.check_auth(config);
-            cloudflare.purge_cache(config);
+            yield cloudflare.check_auth(config);
+            yield cloudflare.purge_cache(config);
         }
         catch (error) {
             core.setFailed(error.message);
