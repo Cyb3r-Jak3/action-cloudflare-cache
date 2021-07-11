@@ -62,13 +62,11 @@ exports.check_auth = check_auth;
 function purge_cache(config) {
     return __awaiter(this, void 0, void 0, function* () {
         core.debug('Starting purge');
-        core.debug(`Purge Body: ${config.purge_body.toString()}`);
         let res;
         try {
             res = yield config.instance.post(`zones/${config.zone_id}/purge_cache`, config.purge_body);
         }
         catch (error) {
-            core.debug(`Purge Body: ${error.request.data}`);
             return;
         }
         if (res.status !== 200) {

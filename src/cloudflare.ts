@@ -21,7 +21,6 @@ export async function check_auth(config: Config): Promise<void> {
 
 export async function purge_cache(config: Config): Promise<void> {
   core.debug('Starting purge')
-  core.debug(`Purge Body: ${config.purge_body.toString()}`)
   let res
   try {
     res = await config.instance.post(
@@ -29,7 +28,6 @@ export async function purge_cache(config: Config): Promise<void> {
       config.purge_body
     )
   } catch (error) {
-    core.debug(`Purge Body: ${error.request.data}`)
     return
   }
   if (res.status !== 200) {

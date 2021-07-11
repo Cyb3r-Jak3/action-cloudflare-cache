@@ -36,7 +36,7 @@ jobs:
     # Put steps here to build your site, check, and deploy your site.
 
     - name: Clear Cloudflare cache
-      uses: Cyb3r-Jak3/cloudflare-cache-cleaner@0.0.1
+      uses: Cyb3r-Jak3/cloudflare-cache-cleaner@<Latest Release>
       env:
         # Zone is required by both methods
         zone: ${{ secrets.CLOUDFLARE_ZONE }}
@@ -48,3 +48,20 @@ jobs:
         email: ${{ secrets.CLOUDFLARE_EMAIL }}
         global_token: ${{ secrets.CLOUDFLARE_KEY }}
 ```
+
+## Keep up-to-date with GitHub Dependabot
+
+Since [Dependabot](https://docs.github.com/en/github/administering-a-repository/keeping-your-actions-up-to-date-with-github-dependabot)
+has [native GitHub Actions support](https://docs.github.com/en/github/administering-a-repository/configuration-options-for-dependency-updates#package-ecosystem),
+to enable it on your GitHub repo all you need to do is add the `.github/dependabot.yml` file:
+
+```yaml
+version: 2
+updates:
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily
+```
+   
