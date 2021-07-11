@@ -8,6 +8,9 @@ on:
       - '**'
     tags-ignore:
       - '**'
+    paths:
+      - "**.ts"
+      - ".github/workflows/typescript.yml"
 
 jobs:
   test:

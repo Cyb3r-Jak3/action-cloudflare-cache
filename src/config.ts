@@ -47,7 +47,7 @@ export function create_config(): Config {
     body = {files: urls}
   }
   return {
-    zone_id: core.getInput('zone_id', {required: true}),
+    zone_id: core.getInput('zone', {required: true}),
     token_method: api_method,
     instance: request_instance,
     purge_body: body
