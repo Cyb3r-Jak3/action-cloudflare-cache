@@ -29,7 +29,7 @@ export async function purge_cache(config: Config): Promise<void> {
       config.purge_body
     )
   } catch (error) {
-    throw new Error(`Error making purge request. ${error.message}`)
+    throw new Error(`Error making purge request. ${error.message} ${res?.data}`)
   }
   if (res.status !== 200) {
     throw new Error(`Purge cache request did not get 200. ${res.data}`)

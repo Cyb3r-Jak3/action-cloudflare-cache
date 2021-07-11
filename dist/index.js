@@ -68,7 +68,7 @@ function purge_cache(config) {
             res = yield config.instance.post(`zones/${config.zone_id}/purge_cache`, config.purge_body);
         }
         catch (error) {
-            throw new Error(`Error making purge request. ${error.message}`);
+            throw new Error(`Error making purge request. ${error.message} ${res === null || res === void 0 ? void 0 : res.data}`);
         }
         if (res.status !== 200) {
             throw new Error(`Purge cache request did not get 200. ${res.data}`);
