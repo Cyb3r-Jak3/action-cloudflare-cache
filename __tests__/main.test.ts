@@ -14,7 +14,7 @@ test('No Zone ID', async () => {
 })
 
 test('Legacy Auth', async () => {
-  process.env['INPUT_ZONE_ID'] = '2'
+  process.env['INPUT_ZONE'] = '2'
   process.env['INPUT_API_TOKEN'] = ''
   process.env['INPUT_GLOBAL_TOKEN'] = '4'
   process.env['INPUT_EMAIL'] = 'cyberjake@pm.me'
@@ -26,7 +26,7 @@ test('Legacy Auth', async () => {
 
 test('Purge Everything', async () => {
   process.env['INPUT_API_TOKEN'] = '1'
-  process.env['INPUT_ZONE_ID'] = '2'
+  process.env['INPUT_ZONE'] = '2'
   let conf = config.create_config()
   expect(conf.token_method).toEqual('token')
   expect(conf.zone_id).toEqual('2')
@@ -36,7 +36,7 @@ test('Purge Everything', async () => {
 
 test('Purge URLs Config', async () => {
   process.env['INPUT_API_TOKEN'] = '1'
-  process.env['INPUT_ZONE_ID'] = '2'
+  process.env['INPUT_ZONE'] = '2'
   process.env['INPUT_URLS'] = 'url1\nurl2'
   let conf = config.create_config()
   expect(conf.token_method).toEqual('token')

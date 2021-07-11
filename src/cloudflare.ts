@@ -24,7 +24,7 @@ export async function purge_cache(config: Config): Promise<void> {
     config.purge_body
   )
   if (res.status !== 200) {
-    core.error('Purge cache request did not get 200.')
+    core.error(`Purge cache request did not get 200. ${res.data}`)
   } else {
     core.info('🧹 Cache has been cleared')
   }
