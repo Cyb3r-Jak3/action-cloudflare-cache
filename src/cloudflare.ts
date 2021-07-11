@@ -13,7 +13,7 @@ export async function check_auth(config: Config): Promise<void> {
       core.info('✔️ Token is good')
       return
     } else {
-      throw new Error(`Checking token returned: ${resp.status}`)
+      throw new Error(`Checking token returned status code: ${resp.status}`)
     }
   } catch (error) {
     throw new Error(`Error when checking token. ${error.message}`)
@@ -22,6 +22,7 @@ export async function check_auth(config: Config): Promise<void> {
 
 export async function purge_cache(config: Config): Promise<void> {
   core.debug('Starting purge')
+  core.debug(`Purge Body: ${JSON.stringify(config.purge_body)}`)
   let res
   try {
     res = await config.instance.post(
@@ -29,7 +30,12 @@ export async function purge_cache(config: Config): Promise<void> {
       config.purge_body
     )
   } catch (error) {
-    throw new Error(`Error making purge request. ${error.message} ${res?.data}`)
+    core.debug(`Request Body: ${JSON.stringify(error.request.data)}`)
+    throw new Error(
+      `Error making purge request. ${error.message} ${JSON.stringify(
+        error.response.data
+      )}`
+    )
   }
   if (res.status !== 200) {
     throw new Error(`Purge cache request did not get 200. ${res.data}`)
