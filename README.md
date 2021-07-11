@@ -36,7 +36,7 @@ jobs:
     # Put steps here to build your site, check, and deploy your site.
 
     - name: Clear Cloudflare cache
-      uses: Cyb3r-Jak3/cloudflare-cache-cleaner@<Latest Release>
+      uses: Cyb3r-Jak3/action-cloudflare-cache@<Latest Release>
       env:
         # Zone is required by both methods
         zone: ${{ secrets.CLOUDFLARE_ZONE }}
