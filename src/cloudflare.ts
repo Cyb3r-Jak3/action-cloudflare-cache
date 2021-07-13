@@ -2,15 +2,16 @@ import * as core from '@actions/core'
 import {Config} from './config'
 
 export async function check_auth(config: Config): Promise<void> {
-  if (config.token_method === 'legacy') {
-    core.warning('Unable to check auth as using legacy method')
-    return
-  }
   try {
-    const resp = await config.instance.get('user/tokens/verify')
+    let resp
+    if (config.token_method === 'legacy') {
+      resp = await config.instance.get('user')
+    } else {
+      resp = await config.instance.get('user/tokens/verify')
+    }
     core.debug(`${resp.status}`)
     if (resp.status === 200) {
-      core.info('✔️ Token is good')
+      core.info('✔️ Auth is good')
       return
     } else {
       throw new Error(`Checking token returned status code: ${resp.status}`)

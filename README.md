@@ -37,7 +37,7 @@ jobs:
 
     - name: Clear Cloudflare cache
       uses: Cyb3r-Jak3/action-cloudflare-cache@<Latest Release>
-      env:
+      with:
         # Zone is required by both methods
         zone: ${{ secrets.CLOUDFLARE_ZONE }}
 
