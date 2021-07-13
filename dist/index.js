@@ -39,15 +39,17 @@ exports.purge_cache = exports.check_auth = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 function check_auth(config) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (config.token_method === 'legacy') {
-            core.warning('Unable to check auth as using legacy method');
-            return;
-        }
         try {
-            const resp = yield config.instance.get('user/tokens/verify');
+            let resp;
+            if (config.token_method === 'legacy') {
+                resp = yield config.instance.get('user');
+            }
+            else {
+                resp = yield config.instance.get('user/tokens/verify');
+            }
             core.debug(`${resp.status}`);
             if (resp.status === 200) {
-                core.info('✔️ Token is good');
+                core.info('✔️ Auth is good');
                 return;
             }
             else {
@@ -211,7 +213,7 @@ function run() {
         try {
             const config = config_1.create_config();
             core.debug('Starting run');
-            core.startGroup('Token Check');
+            core.startGroup('Auth Check');
             yield cloudflare.check_auth(config);
             core.endGroup();
             yield cloudflare.purge_cache(config);

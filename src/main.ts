@@ -6,7 +6,7 @@ export async function run(): Promise<void> {
   try {
     const config = create_config()
     core.debug('Starting run')
-    core.startGroup('Token Check')
+    core.startGroup('Auth Check')
     await cloudflare.check_auth(config)
     core.endGroup()
     await cloudflare.purge_cache(config)
