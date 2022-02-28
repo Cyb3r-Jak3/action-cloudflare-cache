@@ -62,6 +62,6 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily
+      interval: "daily"
 ```
    
