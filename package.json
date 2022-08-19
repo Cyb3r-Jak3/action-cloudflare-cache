@@ -8,8 +8,7 @@
     "build": "tsc && ncc build",
     "format": "prettier --write **/*.ts",
     "lint": "eslint src/**/*.ts && prettier --check **/*.ts",
-    "test": "jest --coverage",
-    "all": "yarn run format-check && yarn run lint && yarn run test"
+    "test": "jest --coverage"
   },
   "repository": {
     "type": "git",
