@@ -1,14 +1,13 @@
 {
   "name": "action-cloudflare-cache",
-  "version": "0.0.0",
+  "version": "1.2.0",
   "private": true,
   "description": "TypeScript template action",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc && ncc build",
     "format": "prettier --write **/*.ts",
-    "format-check": "prettier --check **/*.ts",
-    "lint": "eslint src/**/*.ts",
+    "lint": "eslint src/**/*.ts && prettier --check **/*.ts",
     "test": "jest --coverage",
     "all": "yarn run format-check && yarn run lint && yarn run test"
   },
@@ -28,17 +27,16 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.6.0",
+    "@actions/core": "^1.9.1",
     "axios": "^0.23.0",
     "bent": "^7.3.12"
   },
   "devDependencies": {
     "@types/jest": "^27.0.2",
     "@types/node": "^16.11.1",
-    "@typescript-eslint/parser": "^5.1.0",
+    "@typescript-eslint/parser": "^5.33.1",
     "@vercel/ncc": "^0.31.1",
-    "eslint": "^8.0.1",
-    "eslint-plugin-github": "^4.3.2",
+    "eslint": "^8.22.0",
     "eslint-plugin-jest": "^25.2.2",
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^27.3.1",
