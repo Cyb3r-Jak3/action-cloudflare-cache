@@ -44,8 +44,9 @@ jobs:
         run: |
           rm -rf dist/
           npm run build
-          if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
+          git add -A
+          if [ -n "$(git status --porcelain -- dist)" ]; then
             echo "Detected uncommitted changes after build.  See status below:"
-            git diff dist/index.js
+            git status --porcelain -- dist
             exit 1
           fi
