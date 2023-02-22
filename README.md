@@ -2,10 +2,9 @@
 
 A Github Action that clears cache from Cloudflare. Useful for after deployment as new code will be pulled from your server rather than served from Cloudflare.
 
-
 ## Configuration
 
-**All senstive information like zones and tokens should be stored with [encrypted secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets)**
+**All sensitive information like zones and tokens should be stored with [encrypted secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets)**
 
 ### Zone ID
 
@@ -15,16 +14,15 @@ Your zone ID will be on the bottom right of the overview page.
 
 ### Setting up Authentication
 
-There are two ways that you can provide authentication for Cloudflare, Global Token or API Token.  **It is strongly recommended to use API Token over Global API Key**. To get a walk through guide of getting set up with Authentication then check out the [wiki](https://github.com/Cyb3r-Jak3/action-cloudflare-cache/wiki/Setting-up-Authentication). 
-#### API Token permissons.
-The only permissions required for an API Token is `Zone -> Cache Purge -> Purge`. You can set this for all zones but best pratice would be restricting to the zone in use. Right now there is no method for running with multiple zones.
+There are two ways that you can provide authentication for Cloudflare, Global Token or API Token.  **It is strongly recommended to use API Token over Global API Key**. To get a walk through guide of getting set up with Authentication then check out the [wiki](https://github.com/Cyb3r-Jak3/action-cloudflare-cache/wiki/Setting-up-Authentication).
 
+#### API Token Permissions
+
+The only permissions required for an API Token is `Zone -> Cache Purge -> Purge`. You can set this for all zones but best practice would be restricting to the zone in use. Right now there is no method for looping through multiple zones. You need to call the action for each zone.
 
 ### Example workflow
 
-
 ```yaml
-
 name: Deploy Site
 on: push
 
@@ -64,4 +62,3 @@ updates:
     schedule:
       interval: "daily"
 ```
-   

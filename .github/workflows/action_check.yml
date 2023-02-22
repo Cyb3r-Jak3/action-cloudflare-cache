@@ -12,7 +12,7 @@ on:
       - "**.ts"
       - ".github/workflows/action_check.yml"
       - "action.yml"
-      - "dist/index.js"
+      - "dist/**"
 
 jobs:
   test:
@@ -21,7 +21,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Test Everything
+      - name: Test Purge all
         uses: ./
         with:
           api_token: ${{ secrets.TEST_TOKEN }}
@@ -33,6 +33,6 @@ jobs:
           api_token: ${{ secrets.TEST_TOKEN }}
           zone: ${{ secrets.TEST_ZONE }}
           URLs: |
-            https://blog.jwhite.network/img/rebuild.webp
-            https://blog.jwhite.network/js/common.js
+            https://community.cyberjake.xyz/example1
+            https://community.cyberjake.xyz/example2
 

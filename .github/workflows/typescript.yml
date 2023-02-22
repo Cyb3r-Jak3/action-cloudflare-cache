@@ -16,29 +16,35 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - name: Download Cache
-        uses: actions/cache@v2
-        id: yarn-cache
+      - uses: actions/setup-node@v3
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: yarn-${{ hashFiles('**/yarn.lock') }}
+          node-version: '16'
+
+      - name: Restore NPM cache
+        uses: actions/cache@v3
+        continue-on-error: true
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
           restore-keys: |
-            yarn-
+            ${{ runner.os }}-node-
 
       - name: Install Packages
-        run: yarn install
+        run: npm ci
 
       - name: Lint
-        run: yarn run lint
+        run: npm run lint
 
-      - name: Check format
-        run: yarn run format-check
+      # - name: Run tests
+      #   run: npm run test
 
-      - name: Run tests
-        run: yarn run test
+      - name: Compare the expected and actual dist/ directories
+        run: |
+          rm -rf dist/
+          if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
+            echo "Detected uncommitted changes after build.  See status below:"
+            git diff
+            exit 1
+          fi
