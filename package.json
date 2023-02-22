@@ -17,13 +17,12 @@
   },
   "keywords": [
     "actions",
-    "node",
     "cloudflare"
   ],
   "author": {
     "name": "cyb3rjak3",
-    "email": "cyb3rjak3@pm.me",
-    "url": "https://www.jwhite.network"
+    "email": "git@cyberjake.xyz",
+    "url": "https://cyberjake.xyz"
   },
   "license": "MIT",
   "dependencies": {

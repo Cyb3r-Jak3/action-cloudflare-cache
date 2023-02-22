@@ -4,7 +4,6 @@ import * as cloudflare from './cloudflare'
 
 export async function run(): Promise<void> {
   try {
-
     const config = create_config()
 
     core.startGroup('Auth Check')
@@ -12,12 +11,13 @@ export async function run(): Promise<void> {
     core.endGroup()
 
     await cloudflare.purge_cache(config)
-
   } catch (error: unknown) {
     if (error instanceof Error) {
-        core.setFailed(error.message)
+      core.setFailed(error.message)
     } else {
-        core.setFailed("Got an error when running. However the error is not an error type. Please make a new issue: https://github.com/Cyb3r-Jak3/action-cloudflare-cache/issues/new")
+      core.setFailed(
+        'Got an error when running. However the error is not an error type. Please make a new issue: https://github.com/Cyb3r-Jak3/action-cloudflare-cache/issues/new'
+      )
     }
   }
 }
