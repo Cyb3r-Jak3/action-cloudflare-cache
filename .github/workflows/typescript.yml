@@ -10,6 +10,7 @@ on:
       - '**'
     paths:
       - "**.ts"
+      - "package.json"
       - ".github/workflows/typescript.yml"
 
 jobs:
