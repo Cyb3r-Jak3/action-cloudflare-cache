@@ -12,6 +12,7 @@ module.exports = {
 
   coverageProvider: "v8",
 
-  preset: 'ts-jest'
+  preset: 'ts-jest',
 
+  verbose: true
 };

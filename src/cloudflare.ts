@@ -21,6 +21,8 @@ async function make_request(
     )
   }
 
+  headers.set('User-Agent', 'GitHub Action: Cache Cleaner')
+
   return fetch(base_url + endpoint, {
     method: method,
     headers: headers,
