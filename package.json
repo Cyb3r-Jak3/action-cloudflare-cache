@@ -7,10 +7,10 @@
   "scripts": {
     "build": "tsc && ncc build",
     "format": "prettier --write **/*.ts",
-    "format-check": "prettier --check **/*.ts",
+    "format:check": "prettier --check **/*.ts",
     "lint": "eslint src/**/*.ts",
     "test": "jest --coverage",
-    "all": "pnpm run format-check && pnpm run lint && pnpm run test"
+    "all": "pnpm format:check && pnpm lint && pnpm test"
   },
   "repository": {
     "type": "git",
@@ -29,13 +29,12 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.10.1",
-    "axios": "^1.7.2",
-    "bent": "^7.3.12",
-    "yarn": "^1.22.22"
+    "axios": "^1.7.2"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.7",
+    "@typescript-eslint/eslint-plugin": "^7.13.1",
     "@typescript-eslint/parser": "^7.13.1",
     "@vercel/ncc": "^0.38.1",
     "eslint": "^8.57.0",
@@ -47,7 +46,6 @@
     "js-yaml": "^4.1.0",
     "prettier": "3.3.2",
     "ts-jest": "^29.1.5",
-    "typescript": "^5.5.2",
-    "@typescript-eslint/eslint-plugin": "^7.13.1"
+    "typescript": "^5.5.2"
   }
 }
