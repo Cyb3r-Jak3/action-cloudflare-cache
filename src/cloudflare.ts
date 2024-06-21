@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
 import {Config} from './config'
+import {AxiosError} from 'axios'
 
 export async function check_auth(config: Config): Promise<void> {
   try {
@@ -16,8 +17,12 @@ export async function check_auth(config: Config): Promise<void> {
     } else {
       throw new Error(`Checking token returned status code: ${resp.status}`)
     }
-  } catch (error) {
-    throw new Error(`Error when checking token. ${error.message}`)
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(`Error when checking token. ${error.message}`)
+    } else {
+      throw new Error(`Unknown error when checking token: ${error}`)
+    }
   }
 }
 
@@ -31,12 +36,21 @@ export async function purge_cache(config: Config): Promise<void> {
       config.purge_body
     )
   } catch (error) {
-    core.debug(`Request Body: ${JSON.stringify(error.request.data)}`)
-    throw new Error(
-      `Error making purge request. ${error.message} ${JSON.stringify(
-        error.response.data
-      )}`
-    )
+    if (error instanceof AxiosError) {
+      core.debug(`Request Body: ${JSON.stringify(error.request.data)}`)
+      if (error.response) {
+        core.debug(`Response Data: ${JSON.stringify(error.response.data)}`)
+        throw new Error(
+          `Error making purge request. ${error.message} ${JSON.stringify(
+            error.response.data
+          )}`
+        )
+      }
+      throw new Error(`Error making purge request. ${error.message}`)
+    }
+  }
+  if (res === undefined) {
+    throw new Error('Purge cache request did not get a response')
   }
   if (res.status !== 200) {
     throw new Error(`Purge cache request did not get 200. ${res.data}`)
