@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
-import axios, {AxiosInstance} from 'axios'
+import axios from 'axios'
+import type {AxiosInstance} from 'axios'
 
 export interface Config {
   token_method: string

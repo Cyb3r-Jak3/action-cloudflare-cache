@@ -11,7 +11,11 @@ export async function run(): Promise<void> {
     core.endGroup()
     await cloudflare.purge_cache(config)
   } catch (error) {
-    core.setFailed(error.message)
+    if (error instanceof Error) {
+      core.setFailed(error.message)
+    } else {
+      core.setFailed(`Unknown error: ${error}`)
+    }
   }
 }
 
