@@ -31,7 +31,7 @@ export function create_config(): Config {
   if (api_method === 'token') {
     request_instance = axios.create({
       baseURL: 'https://api.cloudflare.com/client/v4/',
-      headers: {Authorization: `Bearer ${core.getInput('api_token')}`}
+      headers: {"Authorization": `Bearer ${core.getInput('api_token')}`}
     })
   } else {
     request_instance = axios.create({
