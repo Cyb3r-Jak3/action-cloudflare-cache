@@ -5,6 +5,7 @@ import type {AxiosInstance} from 'axios'
 export interface Config {
   token_method: string
   zone_id: string
+  account_id: string
   instance: AxiosInstance
   purge_body: Object
 }
@@ -13,6 +14,9 @@ export function create_config(): Config {
   let api_method
   if (core.getInput('api_token') !== '') {
     api_method = 'token'
+    if (core.getInput('account_id') === '') {
+      throw new Error('A Cloudflare Account ID is necessary to run these actions')
+    }
   } else if (core.getInput('global_token') !== '') {
     if (core.getInput('email') === '') {
       throw new Error('Need email set when using global token')
@@ -49,6 +53,7 @@ export function create_config(): Config {
   }
   return {
     zone_id: core.getInput('zone', {required: true}),
+    account_id: core.getInput('account_id', {required: true}),
     token_method: api_method,
     instance: request_instance,
     purge_body: body

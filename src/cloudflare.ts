@@ -8,7 +8,7 @@ export async function check_auth(config: Config): Promise<void> {
     if (config.token_method === 'legacy') {
       resp = await config.instance.get('user')
     } else {
-      resp = await config.instance.get('user/tokens/verify')
+      resp = await config.instance.get(`${config.account_id}/tokens/verify`)
     }
     core.debug(`${resp.status}`)
     if (resp.status === 200) {
