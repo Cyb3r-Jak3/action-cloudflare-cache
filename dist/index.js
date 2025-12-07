@@ -61,7 +61,8 @@ function check_auth(config) {
                 resp = yield config.instance.get('user');
             }
             else if (config.token_method === 'account') {
-                resp = yield config.instance.get(`accounts/${config.account_id}/tokens/verify`);
+                const endpoint = `accounts/${config.account_id}/tokens/verify`;
+                resp = yield config.instance.get(endpoint);
             }
             else {
                 resp = yield config.instance.get('user/tokens/verify');
