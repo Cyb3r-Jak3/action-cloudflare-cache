@@ -165,7 +165,7 @@ function create_config() {
     if (core.getInput('api_token') !== '') {
         api_method = 'token';
         if (core.getInput('account_id') === '') {
-            throw new Error('A Cloudflare Account ID is necessary to run these actions');
+            throw new Error('A Cloudflare Account ID is necessary when using an API token');
         }
     }
     else if (core.getInput('global_token') !== '') {
@@ -181,7 +181,7 @@ function create_config() {
     if (api_method === 'token') {
         request_instance = axios_1.default.create({
             baseURL: 'https://api.cloudflare.com/client/v4/',
-            headers: { "Authorization": `Bearer ${core.getInput('api_token')}` }
+            headers: { Authorization: `Bearer ${core.getInput('api_token')}` }
         });
     }
     else {
@@ -205,7 +205,7 @@ function create_config() {
     }
     return {
         zone_id: core.getInput('zone', { required: true }),
-        account_id: core.getInput('account_id', { required: true }),
+        account_id: core.getInput('account_id'),
         token_method: api_method,
         instance: request_instance,
         purge_body: body

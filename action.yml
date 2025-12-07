@@ -12,7 +12,7 @@ inputs:
     required: true
     description: 'Cloudflare API token to use'
   account_id:
-    required: true
+    required: false
     description: "Cloudflare Account ID, which can be found in the right sidebar of your domain's overview page on the Cloudflare dashboard."
   URLs:
     required: false
