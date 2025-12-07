@@ -42,6 +42,7 @@ jobs:
 
         # Using API Token
         api_token: ${{ secrets.CLOUDFLARE_TOKEN }}
+        # Using Account API Token
         account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
         # Using Global Token

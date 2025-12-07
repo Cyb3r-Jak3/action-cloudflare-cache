@@ -60,8 +60,11 @@ function check_auth(config) {
             if (config.token_method === 'legacy') {
                 resp = yield config.instance.get('user');
             }
-            else {
+            else if (config.token_method === 'account') {
                 resp = yield config.instance.get(`accounts/${config.account_id}/tokens/verify`);
+            }
+            else {
+                resp = yield config.instance.get('user/tokens/verify');
             }
             core.debug(`${resp.status}`);
             if (resp.status === 200) {
@@ -163,9 +166,12 @@ const axios_1 = __importDefault(__nccwpck_require__(7269));
 function create_config() {
     let api_method;
     if (core.getInput('api_token') !== '') {
-        api_method = 'token';
-        if (core.getInput('account_id') === '') {
-            throw new Error('A Cloudflare Account ID is necessary when using an API token');
+        // this is an account token
+        if (core.getInput('account_id') !== '') {
+            api_method = 'account';
+        }
+        else {
+            api_method = 'token';
         }
     }
     else if (core.getInput('global_token') !== '') {
@@ -178,7 +184,7 @@ function create_config() {
         throw new Error('Need to have either an api_token or global_token with email set');
     }
     let request_instance;
-    if (api_method === 'token') {
+    if (api_method === 'token' || api_method === 'account') {
         request_instance = axios_1.default.create({
             baseURL: 'https://api.cloudflare.com/client/v4/',
             headers: { Authorization: `Bearer ${core.getInput('api_token')}` }
