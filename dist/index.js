@@ -61,7 +61,7 @@ function check_auth(config) {
                 resp = yield config.instance.get('user');
             }
             else {
-                resp = yield config.instance.get(`${config.account_id}/tokens/verify`);
+                resp = yield config.instance.get(`accounts/${config.account_id}/tokens/verify`);
             }
             core.debug(`${resp.status}`);
             if (resp.status === 200) {
