@@ -54,4 +54,11 @@ describe('Config', () => {
     expect((conf.instance.defaults.headers['X-Auth-Key'] = '4'))
     expect((conf.instance.defaults.headers['X-Auth-Email'] = 'cyberjake@pm.me'))
   })
+  test('Account API Token', async () => {
+    process.env['INPUT_API_TOKEN'] = '1'
+    process.env['INPUT_ZONE'] = '2'
+    process.env['INPUT_ACCOUNT_ID'] = '3'
+    let conf = config.create_config()
+    expect(conf.token_method).toEqual('account')
+  })
 })
