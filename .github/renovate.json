@@ -1,0 +1,13 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        "github>Cyb3r-Jak3/renovate-configs//recommend-extended.json"
+    ],
+
+    "constraints": {
+        "pnpm": "^10"
+    },
+    "lockFileMaintenance": {
+        "enabled": false
+    }
+}
