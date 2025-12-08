@@ -7,6 +7,9 @@ export async function check_auth(config: Config): Promise<void> {
     let resp
     if (config.token_method === 'legacy') {
       resp = await config.instance.get('user')
+    } else if (config.token_method === 'account') {
+      const endpoint = `accounts/${config.account_id}/tokens/verify`
+      resp = await config.instance.get(endpoint)
     } else {
       resp = await config.instance.get('user/tokens/verify')
     }
