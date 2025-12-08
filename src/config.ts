@@ -7,7 +7,7 @@ export interface Config {
   zone_id: string
   account_id: string
   instance: AxiosInstance
-  purge_body: Object
+  purge_body: object
 }
 
 export function create_config(): Config {
