@@ -23,6 +23,47 @@ inputs:
   global_token:
     description: "Your Global Cloudflare API key. Highly not recommended to use"
     required: false
+  github_token:
+    description: "The GitHub token to use to install cloudflare-utils."
+    required: false
+    default: "${{ github.token }}"
+  cloudflare_utils_version:
+    description: "Version of cloudflare-utils to install. Defaults to latest."
+    required: false
+    default: "latest"
 runs:
-  using: 'node24'
-  main: 'dist/index.js'
+  using: 'composite'
+  steps:
+    - name: Install cloudflare-utils
+      uses: Cyb3r-Jak3/actions-cloudflare-utils@cb50a7ebdf658584982e5d470397058d815608d3 #v1.0.1
+      with:
+        version: ${{ inputs.cloudflare_utils_version }}
+        github_token: ${{ inputs.github_token }}
+
+    - name: Build purge arguments
+      id: purge_args
+      shell: bash
+      run: |
+        if [ -n "${{ inputs.URLs }}" ]; then
+          ARGS=""
+          while IFS= read -r url; do
+            if [ -n "$url" ]; then
+              ARGS="$ARGS --url $url"
+            fi
+          done <<< "${{ inputs.URLs }}"
+          echo "args=$ARGS" >> "$GITHUB_OUTPUT"
+        else
+          echo "args=--everything" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: Purge Cloudflare Cache
+      shell: bash
+      run: |
+        cloudflare-utils cache-cleaner ${{ steps.purge_args.outputs.args }}
+      env:
+        CLOUDFLARE_ZONE_ID: ${{ inputs.zone }}
+        CLOUDFLARE_API_TOKEN: ${{ inputs.api_token }}
+        CLOUDFLARE_ACCOUNT_ID: ${{ inputs.account_id }}
+        CLOUDFLARE_EMAIL: ${{ inputs.email }}
+        CLOUDFLARE_API_KEY: ${{ inputs.global_token }}
+
