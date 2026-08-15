@@ -9,10 +9,8 @@ on:
     tags-ignore:
       - '**'
     paths:
-      - "**.ts"
       - ".github/workflows/action_check.yml"
       - "action.yml"
-      - "dist/index.js"
 
 jobs:
   test:

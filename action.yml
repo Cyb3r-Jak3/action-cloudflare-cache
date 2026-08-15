@@ -7,35 +7,32 @@ branding:
 inputs:
   zone:
     required: true
-    description: "The Zone ID of your domain, which can be found in the right sidebar of your domain's overview page on the Cloudflare dashboard."
+    description: "Zone ID of your domain, which can be found in the right sidebar of your domain's overview page on the Cloudflare dashboard."
   api_token:
     required: true
     description: 'Cloudflare API token to use'
-  account_id:
-    required: false
-    description: "Cloudflare Account ID (for account tokens), which can be found in the right sidebar of your domain's overview page on the Cloudflare dashboard."
   URLs:
     required: false
     description: "List of URLs to purge. If empty then everything is purged."
   email:
-    description: "The email address you registered your Cloudflare account with."
+    description: "Email address you registered your Cloudflare account with. Highly not recommended to use"
     required: false
   global_token:
-    description: "Your Global Cloudflare API key. Highly not recommended to use"
+    description: "Global Cloudflare API key. Highly not recommended to use"
     required: false
   github_token:
-    description: "The GitHub token to use to install cloudflare-utils."
+    description: "GitHub token to use to install cloudflare-utils."
     required: false
     default: "${{ github.token }}"
   cloudflare_utils_version:
     description: "Version of cloudflare-utils to install. Defaults to latest."
     required: false
-    default: "latest"
+    default: ">=1.9.0,<2"
 runs:
   using: 'composite'
   steps:
     - name: Install cloudflare-utils
-      uses: Cyb3r-Jak3/actions-cloudflare-utils@cb50a7ebdf658584982e5d470397058d815608d3 #v1.0.1
+      uses: Cyb3r-Jak3/actions-cloudflare-utils@69ac14c72249c39ec84a506e1f3394313ab215d5 #v1.1.0
       with:
         version: ${{ inputs.cloudflare_utils_version }}
         github_token: ${{ inputs.github_token }}
@@ -66,4 +63,5 @@ runs:
         CLOUDFLARE_ACCOUNT_ID: ${{ inputs.account_id }}
         CLOUDFLARE_EMAIL: ${{ inputs.email }}
         CLOUDFLARE_API_KEY: ${{ inputs.global_token }}
+        CLOUDFLARE_SKIP_TOKEN_CHECK: true
 
