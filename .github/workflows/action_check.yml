@@ -9,14 +9,14 @@ on:
     tags-ignore:
       - '**'
     paths:
-      - "**.ts"
       - ".github/workflows/action_check.yml"
       - "action.yml"
-      - "dist/index.js"
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      LOG_LEVEL_VERBOSE: true
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -41,7 +41,6 @@ jobs:
         with:
           api_token: ${{ secrets.TEST_ACCOUNT_TOKEN }}
           zone: ${{ secrets.TEST_ZONE }}
-          account_id: ${{ secrets.TEST_ACCOUNT_ID }}
           URLs: |
             https://azure.community.cyberjake.xyz/
             https://azure.community.cyberjake.xyz/favicon.ico

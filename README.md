@@ -2,6 +2,10 @@
 
 A Github Action that clears cache from Cloudflare. Useful for after deployment as new code will be pulled from your server rather than served from Cloudflare.
 
+## Deprecation Notice
+
+As of v4, this action has migrated to using [cloudflare-utils](https://github.com/Cyb3r-Jak3/cloudflare-utils) via [cloudflare-utils-action](https://github.com/Cyb3r-Jak3/actions-cloudflare-utils).  This action will still work but will not be maintained.  Please update your workflows to use the new action.
+
 ## Configuration
 
 **All sensitive information like zones and tokens should be stored with [encrypted secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets)**
