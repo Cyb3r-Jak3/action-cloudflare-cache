@@ -39,7 +39,6 @@ jobs:
         with:
           api_token: ${{ secrets.TEST_ACCOUNT_TOKEN }}
           zone: ${{ secrets.TEST_ZONE }}
-          account_id: ${{ secrets.TEST_ACCOUNT_ID }}
           URLs: |
             https://azure.community.cyberjake.xyz/
             https://azure.community.cyberjake.xyz/favicon.ico

@@ -60,7 +60,6 @@ runs:
       env:
         CLOUDFLARE_ZONE_ID: ${{ inputs.zone }}
         CLOUDFLARE_API_TOKEN: ${{ inputs.api_token }}
-        CLOUDFLARE_ACCOUNT_ID: ${{ inputs.account_id }}
         CLOUDFLARE_EMAIL: ${{ inputs.email }}
         CLOUDFLARE_API_KEY: ${{ inputs.global_token }}
         CLOUDFLARE_SKIP_TOKEN_CHECK: true
