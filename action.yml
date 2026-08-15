@@ -63,4 +63,3 @@ runs:
         CLOUDFLARE_EMAIL: ${{ inputs.email }}
         CLOUDFLARE_API_KEY: ${{ inputs.global_token }}
         CLOUDFLARE_SKIP_TOKEN_CHECK: true
-
